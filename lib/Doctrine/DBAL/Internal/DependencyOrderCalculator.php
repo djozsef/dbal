@@ -64,8 +64,8 @@ final class DependencyOrderCalculator
         $vertex = $this->nodeList[$fromHash];
         $edge   = new DependencyOrderEdge();
 
-        $edge->from   = $fromHash;
-        $edge->to     = $toHash;
+        $edge->from = $fromHash;
+        $edge->to   = $toHash;
 
         $vertex->dependencyList[$toHash] = $edge;
     }
