@@ -196,7 +196,7 @@ class SchemaDiff
                     continue;
                 }
 
-                $calculator->addDependency($foreignTableName, $table->getName(), 1);
+                $calculator->addDependency($foreignTableName, $table->getName());
             }
         }
 

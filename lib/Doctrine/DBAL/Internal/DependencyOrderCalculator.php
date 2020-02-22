@@ -59,14 +59,13 @@ final class DependencyOrderCalculator
     /**
      * Adds a new dependency (edge) to the graph using their hashes.
      */
-    public function addDependency(string $fromHash, string $toHash, int $weight) : void
+    public function addDependency(string $fromHash, string $toHash) : void
     {
         $vertex = $this->nodeList[$fromHash];
         $edge   = new DependencyOrderEdge();
 
         $edge->from   = $fromHash;
         $edge->to     = $toHash;
-        $edge->weight = $weight;
 
         $vertex->dependencyList[$toHash] = $edge;
     }
@@ -111,28 +110,9 @@ final class DependencyOrderCalculator
 
             switch ($adjacentVertex->state) {
                 case self::VISITED:
-                    // Do nothing, since node was already visited
-                    break;
-
                 case self::IN_PROGRESS:
-                    if (isset($adjacentVertex->dependencyList[$vertex->hash]) &&
-                        $adjacentVertex->dependencyList[$vertex->hash]->weight < $edge->weight) {
-                        // If we have some non-visited dependencies in the in-progress dependency, we
-                        // need to visit them before adding the node.
-                        foreach ($adjacentVertex->dependencyList as $adjacentEdge) {
-                            $adjacentEdgeVertex = $this->nodeList[$adjacentEdge->to];
-
-                            if ($adjacentEdgeVertex->state !== self::NOT_VISITED) {
-                                continue;
-                            }
-
-                            $this->visit($adjacentEdgeVertex);
-                        }
-
-                        $adjacentVertex->state = self::VISITED;
-
-                        $this->sortedNodeList[] = $adjacentVertex->value;
-                    }
+                    // Do nothing, since node was already visited or is
+                    // currently visited
                     break;
 
                 case self::NOT_VISITED:

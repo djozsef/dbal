@@ -9,7 +9,4 @@ class DependencyOrderEdge
 
     /** @var string */
     public $to;
-
-    /** @var int */
-    public $weight;
 }
